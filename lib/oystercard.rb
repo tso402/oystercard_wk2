@@ -14,10 +14,6 @@ class Oystercard
     @balance += amount
   end
 
-  def deduct(amount)
-    @balance -= amount
-  end
-
   def in_journey?
     return false unless @in_use
 
@@ -31,6 +27,7 @@ class Oystercard
 
   def touch_out
     @in_use = false
+    deduct(MINIMUM_LIMIT)
   end
 
   private
@@ -45,5 +42,9 @@ class Oystercard
     return false unless @balance < MINIMUM_LIMIT
 
     true
+  end
+
+  def deduct(amount)
+    @balance -= amount
   end
 end

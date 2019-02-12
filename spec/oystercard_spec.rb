@@ -22,7 +22,8 @@ describe Oystercard do
     it 'reduces the total by an amount when deducted' do
       card = Oystercard.new
       card.top_up(Oystercard::MAXIMUM_LIMIT)
-      expect { card.deduct(40) }.to change { card.balance }.by -40
+      card.send(:deduct, 40)
+      expect{card.send(:deduct, 40)}.to change{card.balance}.by -40
     end
   end
 
@@ -55,6 +56,12 @@ describe Oystercard do
 
     it 'Raises an error if touched in with a balance less than the minimum' do
     expect { subject.touch_in }.to raise_error("Insufficient Funds Available")
+    end
+
+    it 'Deducts the minimum fare when touched out' do
+      subject.top_up(Oystercard::MAXIMUM_LIMIT)
+      subject.touch_in
+      expect{subject.touch_out}.to change{subject.balance}.by -(Oystercard::MINIMUM_LIMIT)
     end
   end
 end
