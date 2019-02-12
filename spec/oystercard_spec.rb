@@ -28,25 +28,34 @@ describe Oystercard do
   end
 
   describe 'in use:' do
+
+    let (:entry_station) { double :entry_station }
+
     it 'the Oystercard is not in use' do
       expect(subject.in_journey?).to eq false
     end
 
     it 'is touched in' do
       subject.top_up(Oystercard::MAXIMUM_LIMIT)
-      expect { subject.touch_in }.to change { subject.in_use }.from(false).to(true)
+      expect { subject.touch_in(entry_station) }.to change { subject.in_journey? }.from(false).to(true)
     end
 
     it 'is touched in and shows as in use' do
       subject.top_up(Oystercard::MAXIMUM_LIMIT)
-      subject.touch_in
+      subject.touch_in(entry_station)
       expect(subject.in_journey?).to eq true
+    end
+
+    it "saves an entry station on touch_in" do
+      subject.top_up(10)
+      subject.touch_in(entry_station)
+      expect(subject.entry_station).to eq entry_station
     end
 
     it 'is touched out' do
       subject.top_up(Oystercard::MAXIMUM_LIMIT)
-      subject.touch_in
-      expect { subject.touch_out }.to change { subject.in_use }.from(true).to(false)
+      subject.touch_in(entry_station)
+      expect { subject.touch_out }.to change { subject.in_journey? }.from(true).to(false)
     end
 
     it 'is touched out and no longer shows as in use' do
@@ -54,13 +63,19 @@ describe Oystercard do
       expect(subject.in_journey?).to eq false
     end
 
+    it "forgets the entry station on touch_out" do
+      subject.top_up(Oystercard::MAXIMUM_LIMIT)
+      subject.touch_in(entry_station)
+      expect{ subject.touch_out }.to change { subject.entry_station }.from(entry_station).to(nil)
+    end
+
     it 'Raises an error if touched in with a balance less than the minimum' do
-    expect { subject.touch_in }.to raise_error("Insufficient Funds Available")
+    expect { subject.touch_in(entry_station) }.to raise_error("Insufficient Funds Available")
     end
 
     it 'Deducts the minimum fare when touched out' do
       subject.top_up(Oystercard::MAXIMUM_LIMIT)
-      subject.touch_in
+      subject.touch_in(entry_station)
       expect{subject.touch_out}.to change{subject.balance}.by -(Oystercard::MINIMUM_LIMIT)
     end
   end

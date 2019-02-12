@@ -102,6 +102,13 @@ In order to pay for my journey
 As a customer
 I need to know where I've travelled from
 
+card = Oystercard.new
+card.top_up(10)
+card.touch_in(entry_station)
+card.entry_station
+
+=> "Victoria"
+
 In order to know where I have been
 As a customer
 I want to see to all my previous trips
