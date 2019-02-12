@@ -113,6 +113,15 @@ In order to know where I have been
 As a customer
 I want to see to all my previous trips
 
+require './lib/oystercard.rb'
+card = Oystercard.new
+card.top_up(10)
+card.touch_in('entry_station')
+card.touch_out('exit_station')
+card.list_journeys
+
+=> List of entry and exit
+
 In order to know how far I have travelled
 As a customer
 I want to know what zone a station is in

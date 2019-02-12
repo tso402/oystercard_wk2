@@ -30,6 +30,7 @@ describe Oystercard do
   describe 'in use:' do
 
     let (:entry_station) { double :entry_station }
+    let (:exit_station) { double :exit_station }
 
     it 'the Oystercard is not in use' do
       expect(subject.in_journey?).to eq false
@@ -52,21 +53,35 @@ describe Oystercard do
       expect(subject.entry_station).to eq entry_station
     end
 
+    it 'Forgets an exit station on touch_in' do
+      subject.top_up(10)
+      subject.touch_in(entry_station)
+      expect(subject.exit_station).to eq nil
+    end
+
     it 'is touched out' do
       subject.top_up(Oystercard::MAXIMUM_LIMIT)
       subject.touch_in(entry_station)
-      expect { subject.touch_out }.to change { subject.in_journey? }.from(true).to(false)
+      expect { subject.touch_out(exit_station) }.to change { subject.in_journey? }.from(true).to(false)
     end
 
     it 'is touched out and no longer shows as in use' do
-      subject.touch_out
+      subject.touch_out(exit_station)
       expect(subject.in_journey?).to eq false
     end
 
     it "forgets the entry station on touch_out" do
       subject.top_up(Oystercard::MAXIMUM_LIMIT)
       subject.touch_in(entry_station)
-      expect{ subject.touch_out }.to change { subject.entry_station }.from(entry_station).to(nil)
+      expect{ subject.touch_out(exit_station) }.to change { subject.entry_station }.from(entry_station).to(nil)
+    end
+
+    it 'Updates the exit station when touching out' do
+      card = Oystercard.new
+      card.top_up(10)
+      card.touch_in(entry_station)
+      card.touch_out(exit_station)
+      expect(card.exit_station).to eq exit_station
     end
 
     it 'Raises an error if touched in with a balance less than the minimum' do
@@ -76,7 +91,15 @@ describe Oystercard do
     it 'Deducts the minimum fare when touched out' do
       subject.top_up(Oystercard::MAXIMUM_LIMIT)
       subject.touch_in(entry_station)
-      expect{subject.touch_out}.to change{subject.balance}.by -(Oystercard::MINIMUM_LIMIT)
+      expect{subject.touch_out(exit_station)}.to change{subject.balance}.by -(Oystercard::MINIMUM_LIMIT)
+    end
+
+    it 'Returns a list of journeys as a hash after touch_out' do
+      card = Oystercard.new
+      card.top_up(10)
+      card.touch_in(entry_station)
+      card.touch_out(exit_station)
+      expect(card.list_journeys.any? {|journey| journey[:entry_station] == entry_station}).to be true
     end
   end
 end
