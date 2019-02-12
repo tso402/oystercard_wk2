@@ -101,5 +101,17 @@ describe Oystercard do
       card.touch_out(exit_station)
       expect(card.list_journeys.any? {|journey| journey[:entry_station] == entry_station}).to be true
     end
+
+    it 'Is created with a blank list of journeys' do
+    expect(subject.list_journeys.empty?).to be true
+    end
+
+    it 'After tapping out only 1 journey is added' do
+      card = Oystercard.new
+      card.top_up(10)
+      card.touch_in(entry_station)
+      card.touch_out(exit_station)
+      expect(card.list_journeys.count).to eq 1
+    end
   end
 end
