@@ -48,6 +48,16 @@ describe JourneyLog do
     log = JourneyLog.new(journey_class_double)
     log.start(station)
     log.finish(station)
-    expect(log.journeys).to_not eq (log.instance_variable_get(:@journeys))
+    expect(log.journeys).to include(journey_double)
+  end
+
+  it 'Returns a copy of the list of previous journeys' do
+    station = double :station
+    journey_double = double :journey, end: journey_double, fare: 4
+    journey_class_double = double :journey_class, new: journey_double
+    log = JourneyLog.new(journey_class_double)
+    log.start(station)
+    log.finish(station)
+    expect(log.journeys).to_not be_empty
   end
 end

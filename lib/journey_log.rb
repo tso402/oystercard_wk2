@@ -10,7 +10,12 @@ class JourneyLog
   end
 
   def finish(station = nil)
-    @journeys << @current_journey.end(station)
+    @current_journey.end(station)
+    @journeys << @current_journey
+  end
+
+  def journeys
+    @journeys.dup
   end
 
 private
