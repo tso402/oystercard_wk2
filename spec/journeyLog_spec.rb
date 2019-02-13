@@ -11,7 +11,7 @@ describe JourneyLog do
     journey_class_double = double :journey_class, new: journey_double
     log = JourneyLog.new(journey_class_double)
     log.start(station)
-    expect(log.current_journey).to eq(journey_double)
+    expect(log.send(:current_journey)).to eq(journey_double)
   end
 
   it "finishes a journey when given a station" do
@@ -21,7 +21,7 @@ describe JourneyLog do
     log = JourneyLog.new(journey_class_double)
     log.start(station)
     log.finish(station)
-    expect(log.current_journey).to eq(journey_double)
+    expect(log.send(:current_journey)).to eq(journey_double)
   end
 
   it "should return the current journey when there is an incomplete current journey" do
@@ -31,5 +31,23 @@ describe JourneyLog do
     log = JourneyLog.new(journey_class_double)
     log.start(station)
     expect(log.send(:current_journey)).to eq(journey_double)
+  end
+
+  it 'Should return a new journey if no curreny jounrey exists' do
+    station = double :station
+    journey_double = double :journey, end: journey_double, fare: 4
+    journey_class_double = double :journey_class, new: journey_double
+    log = JourneyLog.new(journey_class_double)
+    expect(log.send(:current_journey, station)).to eq(journey_double)
+  end
+
+  it 'Returns a copy of the list of previous journeys' do
+    station = double :station
+    journey_double = double :journey, end: journey_double, fare: 4
+    journey_class_double = double :journey_class, new: journey_double
+    log = JourneyLog.new(journey_class_double)
+    log.start(station)
+    log.finish(station)
+    expect(log.journeys).to_not eq (log.instance_variable_get(:@journeys))
   end
 end
