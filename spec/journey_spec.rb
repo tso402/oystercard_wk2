@@ -17,6 +17,12 @@ describe Journey do
     station = double :station
     journey = Journey.new(station)
     journey.end(station)
-    expect(journey.fare).to eq MINIMUM_LIMIT
+    expect(journey.fare).to eq Journey::MINIMUM_LIMIT
+  end
+
+  it "returns penalty fare if no exit station" do
+    station = double :station
+    journey = Journey.new(station)
+    expect(journey.fare).to eq Journey::PENALTY_FARE
   end
 end
