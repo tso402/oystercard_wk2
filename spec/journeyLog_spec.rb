@@ -24,4 +24,12 @@ describe JourneyLog do
     expect(log.current_journey).to eq(journey_double)
   end
 
+  it "should return the current journey when there is an incomplete current journey" do
+    station = double :station
+    journey_double = double :journey, end: journey_double, fare: 4
+    journey_class_double = double :journey_class, new: journey_double
+    log = JourneyLog.new(journey_class_double)
+    log.start(station)
+    expect(log.send(:current_journey)).to eq(journey_double)
+  end
 end
