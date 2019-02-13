@@ -25,4 +25,10 @@ describe Journey do
     journey = Journey.new(station)
     expect(journey.fare).to eq Journey::PENALTY_FARE
   end
+
+  it 'Returns a penalty fare if no entry station' do
+    station = double :station
+    journey = Journey.new()
+    expect(journey.fare).to eq Journey::PENALTY_FARE
+  end
 end
