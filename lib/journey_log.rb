@@ -12,10 +12,19 @@ class JourneyLog
   def finish(station = nil)
     @current_journey.end(station)
     @journeys << @current_journey
+    fare = @current_journey.fare
+    @current_journey = nil
+    fare
   end
 
   def journeys
     @journeys.dup
+  end
+
+  def in_journey?
+    return false unless !@current_journey.nil?
+
+    true
   end
 
 private
