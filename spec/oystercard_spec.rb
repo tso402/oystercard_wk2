@@ -123,7 +123,7 @@ describe Oystercard do
       journey_double = double :journey, end: journey_double, fare: 10
       journey_class_double = double :journey_class, new: journey_double
       card = Oystercard.new(journey_class_double)
-      card.top_up(10)
+      card.top_up(20)
       card.touch_in(entry_station)
       card.touch_in(entry_station)
       expect(card.list_journeys).to include(journey_double)

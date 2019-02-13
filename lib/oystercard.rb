@@ -5,7 +5,6 @@ class Oystercard
 
   def initialize(journey_class = Journey)
     @balance = 0
-    @current_journey = nil
     @list_journeys = []
     @journey_class = journey_class
   end
@@ -23,11 +22,12 @@ class Oystercard
   end
 
   def touch_in(entry_station)
+    touch_out() if !@current_journey.nil?
     raise "Insufficient Funds Available" if under_limit?
     @current_journey = @journey_class.new(entry_station)
   end
 
-  def touch_out(exit_station)
+  def touch_out(exit_station = nil)
     @current_journey = @journey_class.new if @current_journey.nil?
     @current_journey.end(exit_station)
     @list_journeys << @current_journey
