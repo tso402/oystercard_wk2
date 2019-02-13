@@ -118,5 +118,16 @@ describe Oystercard do
       card.touch_out(exit_station)
       expect(card.list_journeys).to include(journey_double)
     end
+
+    it 'completes the previous journey if touch in before a touch out' do
+      journey_double = double :journey, end: journey_double, fare: 10
+      journey_class_double = double :journey_class, new: journey_double
+      card = Oystercard.new(journey_class_double)
+      card.top_up(10)
+      card.touch_in(entry_station)
+      card.touch_in(entry_station)
+      expect(card.list_journeys).to include(journey_double)
+    end
+
   end
 end
