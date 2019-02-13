@@ -47,10 +47,13 @@ describe Oystercard do
       expect(subject.in_journey?).to eq true
     end
 
-    it "saves an entry station on touch_in" do
-      subject.top_up(10)
-      subject.touch_in(entry_station)
-      expect(subject.entry_station).to eq entry_station
+    it "creates and saves a new journey on touch in" do
+      journey_double = double :journey
+      journey_class_double = double :journey_class, new: journey_double
+      card = Oystercard.new(journey_class_double)
+      card.top_up(10)
+      card.touch_in(entry_station)
+      expect(card.current_journey).to eq journey_double
     end
 
     it 'Forgets an exit station on touch_in' do
