@@ -28,6 +28,7 @@ class Oystercard
   end
 
   def touch_out(exit_station)
+    @current_journey = @journey_class.new if @current_journey.nil?
     @current_journey.end(exit_station)
     @list_journeys << @current_journey
     deduct(@current_journey.fare)
