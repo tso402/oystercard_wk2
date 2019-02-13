@@ -12,4 +12,11 @@ describe Journey do
     journey.end(station)
     expect(journey.exit_station).to eq(station)
   end
+
+  it 'returns a fare' do
+    station = double :station
+    journey = Journey.new(station)
+    journey.end(station)
+    expect(journey.fare).to eq MINIMUM_LIMIT
+  end
 end
