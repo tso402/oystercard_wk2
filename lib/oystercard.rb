@@ -28,9 +28,9 @@ class Oystercard
   end
 
   def touch_out(exit_station)
-    deduct(MINIMUM_LIMIT)
     @current_journey.end(exit_station)
     @list_journeys << @current_journey
+    deduct(@current_journey.fare)
     @current_journey = nil
   end
 
