@@ -21,7 +21,7 @@ describe JourneyLog do
     log = JourneyLog.new(journey_class_double)
     log.start(station)
     log.finish(station)
-    expect(log.current_journey).to eq(nil)
+    expect(log.current_journey).to eq(journey_double)
   end
 
 end
