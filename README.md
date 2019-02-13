@@ -135,6 +135,15 @@ In order to be charged correctly
 As a customer
 I need a penalty charge deducted if I fail to touch in or out
 
+require './lib/oystercard.rb'
+card = Oystercard.new
+card.top_up(10)
+card.touch_in('entry_station')
+card.touch_in('exit_station')
+card.balance
+
+=> Reduced by penalty amount
+
 In order to be charged the correct amount
 As a customer
 I need to have the correct fare calculated

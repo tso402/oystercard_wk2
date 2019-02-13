@@ -5,7 +5,7 @@ class Oystercard
 
   def initialize
     @balance = 0
-    @entry_station = nil
+    @current_journey = nil
     @list_journeys = []
   end
 
@@ -16,22 +16,21 @@ class Oystercard
   end
 
   def in_journey?
-    return false unless !@entry_station.nil?
+    return false unless !@current_journey.nil?
 
     true
   end
 
   def touch_in(entry_station)
     raise "Insufficient Funds Available" if under_limit?
-    @entry_station = entry_station
-    @exit_station = nil
+    @current_journey = Journey.new(entry_station)
   end
 
   def touch_out(exit_station)
     deduct(MINIMUM_LIMIT)
-    @exit_station = exit_station
-    @list_journeys << {:entry_station => @entry_station, :exit_station => @exit_station}
-    @entry_station = nil
+    @current_journey.end(exit_station)
+    @list_journeys << @current_journey
+    @current_journey = nil
   end
 
   private
