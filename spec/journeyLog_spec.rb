@@ -52,13 +52,8 @@ describe JourneyLog do
   end
 
   it 'Returns a copy of the list of previous journeys' do
-    station = double :station
-    journey_double = double :journey, end: journey_double, fare: 4
-    journey_class_double = double :journey_class, new: journey_double
-    log = JourneyLog.new(journey_class_double)
-    log.start(station)
-    log.finish(station)
-    expect(log.journeys).to include journey_double
+    log = JourneyLog.new
+    expect(log.journeys).to be_empty
   end
 
   it 'When we have a new journeylog we are not to be in a journey' do
@@ -76,5 +71,14 @@ describe JourneyLog do
     log = JourneyLog.new
     log.start(station)
     expect{ log.finish(station) }.to change { log.in_journey? }.from(true).to(false)
+  end
+
+  it 'After a journey the journeys list is increased by 1' do
+    station = double :station
+    journey_double = double :journey, end: journey_double, fare: 4
+    journey_class_double = double :journey_class, new: journey_double
+    log = JourneyLog.new(journey_class_double)
+    log.start(station)
+    expect { log.finish(station) }.to change { log.journeys.count }.by 1
   end
 end

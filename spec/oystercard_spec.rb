@@ -44,36 +44,12 @@ describe Oystercard do
       expect{card.touch_out(exit_station)}.to change{card.balance}.by -(53)
     end
 
-    it 'Is created with a blank list of journeys' do
-    expect(subject.list_journeys.empty?).to be true
-    end
-
-    it 'After tapping out only 1 journey is added' do
-      card = Oystercard.new
-      card.top_up(10)
-      card.touch_in(entry_station)
-      card.touch_out(exit_station)
-      expect(card.list_journeys.count).to eq 1
-    end
-
-    it 'creates a journey with nil entry_station if touched out without a touch in' do
-      journey_double = double :journey, end: journey_double, fare: 10
-      journey_class_double = double :journey_class, new: journey_double
-      card = Oystercard.new(journey_class_double)
-      card.top_up(10)
-      card.touch_out(exit_station)
-      expect(card.list_journeys).to include(journey_double)
-    end
-
     it 'completes the previous journey if touch in before a touch out' do
-      journey_double = double :journey, end: journey_double, fare: 10
-      journey_class_double = double :journey_class, new: journey_double
-      card = Oystercard.new(journey_class_double)
+      journey_log_double = double :journey_log, in_journey?: true, start: nil, finish: 6
+      card = Oystercard.new(journey_log_double)
       card.top_up(20)
       card.touch_in(entry_station)
-      card.touch_in(entry_station)
-      expect(card.list_journeys).to include(journey_double)
+      expect{ card.touch_in(entry_station) }.to change { card.balance }.by -6
     end
-
   end
 end
