@@ -29,8 +29,8 @@ describe Oystercard do
 
   describe 'in use:' do
 
-    let (:entry_station) { double :entry_station }
-    let (:exit_station) { double :exit_station }
+    let (:entry_station) { double :entry_station, name: 'Victoria', zone: 1 }
+    let (:exit_station) { double :exit_station, name: 'Aldgate', zone: 1 }
 
     it 'Raises an error if touched in with a balance less than the minimum' do
     expect { subject.touch_in(entry_station) }.to raise_error("Insufficient Funds Available")
@@ -53,14 +53,13 @@ describe Oystercard do
     end
 
     it "Outputs a list of journeys in a neat way" do
+      journey_double = double :journey_doubl, entry_station: entry_station, exit_station: exit_station
       jounrey_log_double = double :journey_Log, in_journey?: false, start: nil, finish: 1 , journeys: [journey_double]
-      journey_double = double :journey_doubl, entry: entry_station, exit: exit_station
       card = Oystercard.new(jounrey_log_double)
       card.top_up(20)
       card.touch_in(entry_station)
       card.touch_out(exit_station)
-      expect(card.list_journeys).to eq([{entry: entry_station, exit: exit_station}])
+      expect{ card.list_journeys }.to output{ "Entry: Victoria Zone 1, Exit: Aldgate Zone 1" }.to_stdout
     end
   end
-
 end

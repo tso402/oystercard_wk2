@@ -26,6 +26,12 @@ class Oystercard
     deduct(@journeyLog.finish(exit_station))
   end
 
+  def list_journeys
+    @journeyLog.journeys.each do |journey|
+      puts "Entry: #{journey.entry_station.name} Zone #{journey.entry_station.zone}, Exit: #{journey.exit_station.name} Zone #{journey.exit_station.zone}"
+    end
+  end
+
   private
 
   def over_limit?(amount)
