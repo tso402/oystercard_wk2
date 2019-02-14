@@ -60,4 +60,9 @@ describe JourneyLog do
     log.finish(station)
     expect(log.journeys).to_not be_empty
   end
+
+  it 'When we have a new journeylog we are not to be in a journey' do
+    log = JourneyLog.new
+    expect(log.in_journey?).to eq false 
+  end
 end

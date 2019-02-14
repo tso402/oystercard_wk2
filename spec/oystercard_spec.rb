@@ -32,9 +32,6 @@ describe Oystercard do
     let (:entry_station) { double :entry_station }
     let (:exit_station) { double :exit_station }
 
-    it 'the Oystercard is not in use' do
-      expect(subject.in_journey?).to eq false
-    end
 
     it 'is touched in' do
       subject.top_up(Oystercard::MAXIMUM_LIMIT)
