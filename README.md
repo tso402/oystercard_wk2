@@ -156,3 +156,10 @@ card.balance
 In order to be charged the correct amount
 As a customer
 I need to have the correct fare calculated
+
+require './lib/oystercard.rb'
+card = Oystercard.new
+card.top_up(10)
+card.touch_in('entry_station')
+card.touch_in('exit_station')
+card.balance
