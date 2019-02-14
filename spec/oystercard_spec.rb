@@ -51,5 +51,16 @@ describe Oystercard do
       card.touch_in(entry_station)
       expect{ card.touch_in(entry_station) }.to change { card.balance }.by -6
     end
+
+    it "Outputs a list of journeys in a neat way" do
+      jounrey_log_double = double :journey_Log, in_journey?: false, start: nil, finish: 1 , journeys: [journey_double]
+      journey_double = double :journey_doubl, entry: entry_station, exit: exit_station
+      card = Oystercard.new(jounrey_log_double)
+      card.top_up(20)
+      card.touch_in(entry_station)
+      card.touch_out(exit_station)
+      expect(card.list_journeys).to eq([{entry: entry_station, exit: exit_station}])
+    end
   end
+
 end
