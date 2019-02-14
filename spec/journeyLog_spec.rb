@@ -63,6 +63,11 @@ describe JourneyLog do
 
   it 'When we have a new journeylog we are not to be in a journey' do
     log = JourneyLog.new
-    expect(log.in_journey?).to eq false 
+    expect(log.in_journey?).to eq false
+  end
+
+  it 'is touched in' do
+    station = double :station
+    expect { subject.start(station) }.to change { subject.in_journey? }.from(false).to(true)
   end
 end

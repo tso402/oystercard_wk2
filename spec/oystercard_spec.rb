@@ -32,12 +32,6 @@ describe Oystercard do
     let (:entry_station) { double :entry_station }
     let (:exit_station) { double :exit_station }
 
-
-    it 'is touched in' do
-      subject.top_up(Oystercard::MAXIMUM_LIMIT)
-      expect { subject.touch_in(entry_station) }.to change { subject.in_journey? }.from(false).to(true)
-    end
-
     it 'is touched in and shows as in use' do
       subject.top_up(Oystercard::MAXIMUM_LIMIT)
       subject.touch_in(entry_station)
