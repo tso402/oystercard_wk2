@@ -16,6 +16,7 @@ I want money on my card
 Plan for checking a new card is initialised with a balance of 0:
 
 ```
+require './lib/oystercard.rb'
 card = Oystercard.new
 card.balance == 0
 ```
@@ -24,6 +25,7 @@ In order to keep using public transport
 As a customer
 I want to add money to my card
 
+require './lib/oystercard.rb'
 card = Oystercard.new
 card.top_up(90)
 card.balance
@@ -32,6 +34,7 @@ In order to protect my money
 As a customer
 I don't want to put too much money on my card
 
+require './lib/oystercard.rb'
 card = Oystercard.new
 card.top_up(900)
 
@@ -41,6 +44,7 @@ In order to pay for my journey
 As a customer
 I need my fare deducted from my card
 
+require './lib/oystercard.rb'
 card = Oystercard.new
 card.top_up(90)
 card.deduct(40)
@@ -53,6 +57,7 @@ As a customer
 I need to touch in and out
 
 ```shell
+require './lib/oystercard.rb'
 card = Oystercard.new
 card.top_up(50)
 
@@ -76,6 +81,7 @@ As a customer
 I need to have the minimum amount for a single journey
 
 ```ruby
+require './lib/oystercard.rb'
 card = Oystercard.new
 card.touch_in
 
@@ -89,6 +95,7 @@ I need to pay for my journey when it's complete
 _assume that a journey costs £1:_
 
 ```ruby
+require './lib/oystercard.rb'
 card = Oystercard.new
 card.top_up(90)
 card.touch_in
@@ -102,6 +109,7 @@ In order to pay for my journey
 As a customer
 I need to know where I've travelled from
 
+require './lib/oystercard.rb'
 card = Oystercard.new
 card.top_up(10)
 card.touch_in(entry_station)
@@ -126,6 +134,7 @@ In order to know how far I have travelled
 As a customer
 I want to know what zone a station is in
 
+require './lib/oystercard.rb'
 station = Station.new("Victoria",1)
 station.zone
 

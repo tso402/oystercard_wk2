@@ -1,3 +1,5 @@
+require_relative 'journey_log'
+
 class Oystercard
   attr_reader :balance,:current_journey, :journeyLog
   MAXIMUM_LIMIT = 90
