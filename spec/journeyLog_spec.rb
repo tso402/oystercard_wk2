@@ -58,7 +58,7 @@ describe JourneyLog do
     log = JourneyLog.new(journey_class_double)
     log.start(station)
     log.finish(station)
-    expect(log.journeys).to_not be_empty
+    expect(log.journeys).to include journey_double
   end
 
   it 'When we have a new journeylog we are not to be in a journey' do

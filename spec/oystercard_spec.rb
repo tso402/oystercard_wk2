@@ -44,16 +44,6 @@ describe Oystercard do
       expect{card.touch_out(exit_station)}.to change{card.balance}.by -(53)
     end
 
-    it 'A list of journeys contains the journey after touch_out' do
-      journey_double = double :journey, end: journey_double, fare: 10
-      journey_class_double = double :journey_class, new: journey_double
-      card = Oystercard.new(journey_class_double)
-      card.top_up(10)
-      card.touch_in(entry_station)
-      card.touch_out(exit_station)
-      expect(card.list_journeys).to include(journey_double)
-    end
-
     it 'Is created with a blank list of journeys' do
     expect(subject.list_journeys.empty?).to be true
     end
