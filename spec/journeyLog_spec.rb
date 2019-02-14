@@ -73,7 +73,8 @@ describe JourneyLog do
 
   it 'Forgets an exit station on touch_in' do
     station = double :station
-    log = JourneyLog.start(station)
-    expect{ log.finish(station) }.to change { log.current_journey }.to(nil)
+    log = JourneyLog.new
+    log.start(station)
+    expect{ log.finish(station) }.to change { log.in_journey? }.from(true).to(false)
   end
 end

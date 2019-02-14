@@ -10,6 +10,7 @@ class JourneyLog
   end
 
   def finish(station = nil)
+    current_journey
     @current_journey.end(station)
     @journeys << @current_journey
     fare = @current_journey.fare

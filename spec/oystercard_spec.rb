@@ -32,27 +32,13 @@ describe Oystercard do
     let (:entry_station) { double :entry_station }
     let (:exit_station) { double :exit_station }
 
-    it 'is touched out' do
-      subject.top_up(Oystercard::MAXIMUM_LIMIT)
-      subject.touch_in(entry_station)
-      expect { subject.touch_out(exit_station) }.to change { subject.in_journey? }.from(true).to(false)
-    end
-
-    it 'is touched out and no longer shows as in use' do
-      subject.top_up(Oystercard::MAXIMUM_LIMIT)
-      subject.touch_in(entry_station)
-      subject.touch_out(exit_station)
-      expect(subject.in_journey?).to eq false
-    end
-
     it 'Raises an error if touched in with a balance less than the minimum' do
     expect { subject.touch_in(entry_station) }.to raise_error("Insufficient Funds Available")
     end
 
     it 'Deducts the journey fare when touched out' do
-      journey_double = double :journey, end: journey_double, fare: 53
-      journey_class_double = double :journey_class, new: journey_double
-      card = Oystercard.new(journey_class_double)
+      journey_log_double = double :journey_log, in_journey?: false, start: nil, finish: 53
+      card = Oystercard.new(journey_log_double)
       card.top_up(Oystercard::MAXIMUM_LIMIT)
       card.touch_in(entry_station)
       expect{card.touch_out(exit_station)}.to change{card.balance}.by -(53)

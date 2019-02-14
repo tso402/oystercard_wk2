@@ -21,7 +21,7 @@ class Oystercard
   end
 
   def touch_out(exit_station = nil)
-    deduct(@journeyLog.current_journey.finish(exit_station))
+    deduct(@journeyLog.finish(exit_station))
   end
 
   private
