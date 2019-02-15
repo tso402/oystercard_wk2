@@ -8,6 +8,7 @@ describe JourneyLog do
   it "starts a new journey when given a station" do
     journey_double = double :journey, end: journey_double, fare: 4
     journey_class_double = double :journey_class, new: journey_double
+    allow(journey_double).to receive(:end).and_return(journey_double)
     log = JourneyLog.new(journey_class_double)
     log.start(station)
     expect(log.send(:current_journey)).to eq(journey_double)
@@ -16,6 +17,7 @@ describe JourneyLog do
   it "finishes a journey when given a station" do
     journey_double = double :journey, end: journey_double, fare: 4
     journey_class_double = double :journey_class, new: journey_double
+    allow(journey_double).to receive(:end).and_return(journey_double)
     log = JourneyLog.new(journey_class_double)
     log.start(station)
     log.finish(station)
@@ -25,6 +27,7 @@ describe JourneyLog do
   it "should return the current journey when there is an incomplete current journey" do
     journey_double = double :journey, end: journey_double, fare: 4
     journey_class_double = double :journey_class, new: journey_double
+    allow(journey_double).to receive(:end).and_return(journey_double)
     log = JourneyLog.new(journey_class_double)
     log.start(station)
     expect(log.send(:current_journey)).to eq(journey_double)
@@ -33,6 +36,7 @@ describe JourneyLog do
   it 'Should return a new journey if no curreny jounrey exists' do
     journey_double = double :journey, end: journey_double, fare: 4
     journey_class_double = double :journey_class, new: journey_double
+    allow(journey_double).to receive(:end).and_return(journey_double)
     log = JourneyLog.new(journey_class_double)
     expect(log.send(:current_journey, station)).to eq(journey_double)
   end
@@ -40,6 +44,7 @@ describe JourneyLog do
   it 'Returns a copy of the list of previous journeys' do
     journey_double = double :journey, end: journey_double, fare: 4
     journey_class_double = double :journey_class, new: journey_double
+    allow(journey_double).to receive(:end).and_return(journey_double)
     log = JourneyLog.new(journey_class_double)
     log.start(station)
     log.finish(station)
